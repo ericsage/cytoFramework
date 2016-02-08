@@ -6,7 +6,7 @@ import store from './state/store.jsx'
 import emptyReducer from './state/reducers/emptyReducer.jsx'
 import DevTools from './containers/DevTools.jsx'
 
-export class CytoFramework {
+export default class CytoFramework {
 
   constructor(reducers = {emptyReducer}) {
     this.store = store(reducers)
@@ -26,6 +26,3 @@ export class CytoFramework {
   }
 
 }
-
-var cyto = new CytoFramework()
-cyto.dev(document.getElementById('devtools'))
