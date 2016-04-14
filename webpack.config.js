@@ -4,7 +4,13 @@ module.exports = {
   entry: path.resolve(__dirname, "src/app.jsx"),
   output: {
     path: path.resolve(__dirname, "build"),
-    filename: "app.js"
+    library: "CytoFramework",
+    libraryTarget: "umd",
+    filename: "cyto.js"
+  },
+  externals: {
+    "react":"React",
+    "react-dom":"ReactDOM"
   },
   resolve: {
     root: __dirname,

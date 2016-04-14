@@ -1,28 +1,27 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { Map } from 'immutable'
 import store from './state/store.jsx'
 import emptyReducer from './state/reducers/emptyReducer.jsx'
-import DevTools from './containers/DevTools.jsx'
 
-export default class CytoFramework {
+class CytoFramework {
 
-  constructor(reducers = {emptyReducer}) {
-    this.store = store(reducers)
+  constructor(modules = [{reducers: {emptyReducer}}], initialState) {
+    var reducers = modules.reduce((Rs, M) => ( Object.assign(Rs, M.reducers) ), {})
+    this.store = store(reducers, initialState)
   }
 
-  render(element, widget) { render(element, widget, {}, []) }
-  render(element, widget, props) { render(element, widget, props, []) }
-  render(element, widget, props, children) {
-    var component = React.createElement(widget, props, children)
+  render(module, element) { render(element, module, []) }
+  render(module, element, children) {
     ReactDOM.render(
-        React.createElement(Provider, {store: this.store}, component),
-      element)
+      React.createElement(Provider, {store: this.store},
+        React.createElement(module.component, {}, children)
+      ),
+    element)
   }
 
-  dev(element) {
-    this.render(element, DevTools)
-  }
+}
 
+export function config(reducers, state = undefined) {
+  return new CytoFramework(reducers, state)
 }

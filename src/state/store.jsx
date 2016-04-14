@@ -8,10 +8,10 @@ const logger = createLogger()
 
 const finalCreateStore = compose(
   applyMiddleware(thunk, logger),
-  DevTools.instrument()
+  window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore)
 
-export default function configureStore(reducers = { emptyReducer }) {
-  const store = finalCreateStore(combineReducers(reducers))
+export default function configureStore(reducers = { emptyReducer }, initialstate = undefined) {
+  const store = finalCreateStore(combineReducers(reducers), initialstate)
   return store
 }
